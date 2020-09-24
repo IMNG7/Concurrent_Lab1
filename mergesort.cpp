@@ -6,6 +6,9 @@
 					 https://www.geeksforgeeks.org/merge-sort/ 
 */
 #include "mergesort.h"
+
+extern vector<int> UnsortedArray;
+extern int part;
 /*
 	Function Name: mergesort
 	Description: Initial recursive function to split the vector for sorting
@@ -28,6 +31,31 @@ void mergesort(vector<int> &nums,int left,int right)
 		// sorting
 		merge(nums,left,middle,right);
 	}
+}
+/*
+	Function Name: mergesort
+	Description: Initial recursive function to split the vector for sorting
+	Inputs: nums- vector to be printed.
+			left - Left index of vector to be split
+			Right - Right index of the smal vector to be split.
+	Returns: Nothing.
+*/
+void mergesort(void *args)
+{
+		int thread_part = part++;
+		int size = UnsortedArray.size();
+		// Calculates the middle value of the array given
+		int left =size,right=size;
+
+		int middle = left+((right-left)/2);
+		//Splits the array into two parts and further given to split
+		//until there is only one element left in each.
+		mergesort(UnsortedArray,left,middle);
+		mergesort(UnsortedArray,middle+1,right);
+		// After splitting each, the are given to merge back after 
+		// sorting
+		merge(UnsortedArray,left,middle,right);
+	
 }
 /*
 	Function Name: merge

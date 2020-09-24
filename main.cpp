@@ -22,8 +22,10 @@
 #include "quicksort.h"
 #include "bucketsort.h"
 
-using namespace std;
 
+using namespace std;
+vector<int> UnsortedArray;
+int part=0;
 int main(int argc, char *args[])									 
 {	int c;
 	string input_file,output_file,algorithm;
@@ -78,7 +80,7 @@ int main(int argc, char *args[])
 	}
 	string filename(input_file);
 	// Takes the values inside the file and stores them in a vector 
-	vector<int> UnsortedArray = ConvertToVector(filename);
+	UnsortedArray = ConvertToVector(filename);
 	if(algorithm == "merge")
 	{
 		//Sending the Unsorted Array to mergesort function.
