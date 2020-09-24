@@ -20,6 +20,7 @@
 #include "util.h"
 #include "mergesort.h"
 #include "quicksort.h"
+#include "bucketsort.h"
 
 using namespace std;
 
@@ -89,6 +90,12 @@ int main(int argc, char *args[])
 		//Sending the Unsorted Array to quicksort function.
 		quicksort(UnsortedArray,0,UnsortedArray.size()-1);
 		cout<<"\n\rDoing quicksort";
+	}
+	else if(algorithm == "bucket")
+	{	
+		//Sending the Unsorted Array to quicksort function.
+		bucketsort(UnsortedArray,4);
+		cout<<"\n\rDoing bucketsort";
 	}
 	else
 	{
