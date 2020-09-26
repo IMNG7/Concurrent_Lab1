@@ -9,7 +9,6 @@
 #include "quicksort.h"
 
 extern vector<int> UnsortedArray;
-extern int part;
 /*
 	Function Name: quicksort
 	Description: Initial recursive function to split the vector for sorting

@@ -17,6 +17,7 @@
 #include <fstream>
 #include <sstream>
 #include <getopt.h>
+#include <pthread.h>
 #include "util.h"
 #include "mergesort.h"
 #include "quicksort.h"
@@ -24,8 +25,10 @@
 
 
 using namespace std;
-vector<int> UnsortedArray;
-int part=0;
+vector<int> UnsortedArray = {0};
+int thread_num=4;
+int offset=0;
+//pthread_barrier_t bar;
 int main(int argc, char *args[])									 
 {	int c;
 	string input_file,output_file,algorithm;
@@ -81,10 +84,40 @@ int main(int argc, char *args[])
 	string filename(input_file);
 	// Takes the values inside the file and stores them in a vector 
 	UnsortedArray = ConvertToVector(filename);
+	//cout<<"\n\rSIZE GIVEN:"<<UnsortedArray.size()<<"\n\r";
+	pthread_t threads[thread_num];
+	ssize_t* argt;
+	int ret;
+	offset = UnsortedArray.size() % thread_num;
+	//pthread_barrier_init(&bar, NULL, thread_num);
 	if(algorithm == "merge")
 	{
 		//Sending the Unsorted Array to mergesort function.
-		mergesort(UnsortedArray,0,UnsortedArray.size()-1);
+		//mergesort(UnsortedArray,0,UnsortedArray.size()-1);
+		for(int i=0;i<thread_num;i++)
+		{
+			argt[i]=i;
+			ret = pthread_create(&threads[i],NULL,&mergesort_thread,&argt[i]);
+			if(ret)
+			{
+				cout<<"ERROR WHILE CREATION";
+				exit(-1);
+			}
+			else
+			cout<<"\n\rThreads Created";
+		}
+		for(int i=0;i<thread_num;i++)
+		{
+			ret = pthread_join(threads[i],NULL);
+			if(ret)
+			{
+				printf("ERROR; pthread_join: %d\n", ret);
+				exit(-1);
+			}
+			else
+			cout<<"\n\r Threads Joined";
+		}
+		final_merge_sorted(UnsortedArray,thread_num,1);
 		cout<<"\n\rDoing mergesort";
 	}
 	else if(algorithm == "quick")
@@ -107,12 +140,12 @@ int main(int argc, char *args[])
 		mergesort(UnsortedArray,0,UnsortedArray.size()-1);
 	}
 	//If output_file is provided, then send the Array to output_file
-	if(!(output_file.empty())) add_to_file(UnsortedArray,output_file);
+	//if(!(output_file.empty())) add_to_file(UnsortedArray,output_file);
 	//If output_file is not provided, then send the Array to console
-	else
-	{
-		cout<<"\n\r Output File Not Given \n\rPrinting the Sorted Array:";
+	// else
+	// {
+		//cout<<"\n\r Output File Not Given Printing the Sorted Array:";
 		printIntVector(UnsortedArray);
-	}
+	//}
 	return 0;
 }

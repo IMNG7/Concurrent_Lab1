@@ -6,9 +6,12 @@
 					 https://www.geeksforgeeks.org/merge-sort/ 
 */
 #include "mergesort.h"
+#include "pthread.h"
+
 
 extern vector<int> UnsortedArray;
-extern int part;
+extern int thread_num;
+extern int offset;
 /*
 	Function Name: mergesort
 	Description: Initial recursive function to split the vector for sorting
@@ -19,10 +22,11 @@ extern int part;
 */
 void mergesort(vector<int> &nums,int left,int right)
 {
-	if(left<right)
-	{
+	
 		// Calculates the middle value of the array given
 		int middle = left+((right-left)/2);
+		if(left<right)
+		{
 		//Splits the array into two parts and further given to split
 		//until there is only one element left in each.
 		mergesort(nums,left,middle);
@@ -40,22 +44,31 @@ void mergesort(vector<int> &nums,int left,int right)
 			Right - Right index of the smal vector to be split.
 	Returns: Nothing.
 */
-void mergesort(void *args)
+void* mergesort_thread(void* args)
 {
-		int thread_part = part++;
+		size_t thread_part = *((size_t*)args);
 		int size = UnsortedArray.size();
+		cout<<"\n\rtheadpart:"<<thread_part<<"\n\r";
+		int left =thread_part * (size/thread_num);
+		// cout<<"\n\r"<<left<<"\n\r";
+		int right=((thread_part+1) * (size/thread_num)) -1;
+		// cout<<"\n\r"<<right<<"\n\r";
+		if (thread_part == thread_num - 1) {
+        right += offset;
+    	}
 		// Calculates the middle value of the array given
-		int left =size,right=size;
-
 		int middle = left+((right-left)/2);
+		if(left<right)
+		{
 		//Splits the array into two parts and further given to split
 		//until there is only one element left in each.
-		mergesort(UnsortedArray,left,middle);
-		mergesort(UnsortedArray,middle+1,right);
+		mergesort(UnsortedArray,left,right);
+		mergesort(UnsortedArray,left+1,right);
 		// After splitting each, the are given to merge back after 
 		// sorting
+		// pthread_barrier_wait(&bar);
 		merge(UnsortedArray,left,middle,right);
-	
+		}
 }
 /*
 	Function Name: merge
@@ -73,7 +86,16 @@ void merge(vector<int> &nums,int left,int middle,int right)
 	//Size of the Right side array
 	int rightsize = right - middle;
 	//Temp arrays to save the numbers
-	int lefttemp[leftsize],righttemp[rightsize];
+	// cout<<"\n\rleftsize:"<<leftsize<<"\n\r";
+	// cout<<"\n\rrightsize:"<<rightsize<<"\n\r";
+	if(rightsize < 0)
+	{
+		cout<<"\n\rleft:"<<left<<"\n\r";
+		cout<<"\n\rright:"<<right<<"\n\r";
+		cout<<"\n\rmiddle:"<<middle<<"\n\r";
+	}
+	int* lefttemp = new int[leftsize];
+	int* righttemp = new int[rightsize];
 	int i,j,k;
 	// Save the arrays from the left and right to temp.
 	for(i=0;i<leftsize;i++)
@@ -113,5 +135,24 @@ void merge(vector<int> &nums,int left,int middle,int right)
 		nums[k]=righttemp[j];
 		j++;
 		k++;
+	}
+}
+void final_merge_sorted(vector<int> &nums,int num_thread,int agg)
+{
+	int size = UnsortedArray.size();
+	for(int i=0;i<num_thread;i+=2)
+	{
+		int left = i*(size/thread_num)*agg;
+		int right = ((i+2)*(size/thread_num)*agg)- 1;
+		int middle = left + ((size/thread_num)*agg) - 1;
+		if(right >= size)
+		{
+			right = size - 1;
+		}
+		merge(nums,left,middle,right);
+	}
+	if(num_thread/2 >= 1)
+	{
+		final_merge_sorted(nums,num_thread/2,agg*2);
 	}
 }

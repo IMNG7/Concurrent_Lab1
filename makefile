@@ -5,11 +5,13 @@
 
 DEPS = main.o util.o quicksort.o mergesort.o bucketsort.o
 CC = g++
+LIBS = -pthread
+CFLAGS = -g -O3
 
 all: mysort
 
 mysort: ${DEPS}
-	${CC} ${DEPS} -o $@
+	${CC} ${LIBS} ${CFLAGS} ${DEPS} -o $@ 
 
 *.o: *.cpp *.h
 	${CC} -c *.cpp
