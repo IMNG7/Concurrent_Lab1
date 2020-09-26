@@ -9,6 +9,8 @@
 #include "quicksort.h"
 
 extern vector<int> UnsortedArray;
+extern int thread_num;
+extern int offset;
 /*
 	Function Name: quicksort
 	Description: Initial recursive function to split the vector for sorting
@@ -19,6 +21,7 @@ extern vector<int> UnsortedArray;
 */
 void quicksort(vector<int> &nums,int left,int right)
 {
+	
 	if(left<right)
 	{
 		// Takes the RIGHT number as pivot and uses it for sorting
@@ -56,4 +59,43 @@ int seperate(vector<int> &nums,int left,int right)
 	nums[i+1]= nums[right];
 	nums[right] = temp;
 	return (i+1);
+}
+void* quicksort_thread(void* args)
+{
+	size_t thread_part = *((size_t*)args);
+	int size = UnsortedArray.size();
+	cout<<"\n\rtheadpart:"<<thread_part<<"\n\r";
+	int left =thread_part * (size/thread_num);
+	// cout<<"\n\r"<<left<<"\n\r";
+	int right=((thread_part+1) * (size/thread_num)) -1;
+	// cout<<"\n\r"<<right<<"\n\r";
+	if (thread_part == thread_num - 1) 
+	{
+        right += offset;
+    }
+	if(left<right)
+	{
+		// Takes the RIGHT number as pivot and uses it for sorting
+		int sep = seperate(UnsortedArray,left,right);
+		quicksort(UnsortedArray,left,sep-1);
+		quicksort(UnsortedArray,sep+1,right);
+	}
+}
+void final_quick_sorted(vector<int> &nums,int num_thread,int agg)
+{
+	int size = UnsortedArray.size();
+	for(int i=0;i<num_thread;i+=2)
+	{
+		int left = i*(size/thread_num)*agg;
+		int right = ((i+2)*(size/thread_num)*agg)- 1;
+		if(right >= size)
+		{
+			right = size - 1;
+		}
+		quicksort(nums,left,right);
+	}
+	if(num_thread/2 >= 1)
+	{
+		final_quick_sorted(nums,num_thread/2,agg*2);
+	}
 }

@@ -10,6 +10,7 @@
 #define QUICKSORT_H
 
 #include <vector>
+#include <iostream>
 
 using namespace std;
 /*
@@ -22,6 +23,7 @@ void quicksort(vector<int> &nums,int left,int right);
 	Description: Gets the pivot for next split.
 */
 int seperate(vector<int> &nums,int left,int right);
-
+void* quicksort_thread(void* args);
+void final_quick_sorted(vector<int> &nums,int num_thread,int agg);
 
 #endif

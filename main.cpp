@@ -121,9 +121,34 @@ int main(int argc, char *args[])
 		cout<<"\n\rDoing mergesort";
 	}
 	else if(algorithm == "quick")
-	{	
-		//Sending the Unsorted Array to quicksort function.
-		quicksort(UnsortedArray,0,UnsortedArray.size()-1);
+	{
+		//Sending the Unsorted Array to mergesort function.
+		//mergesort(UnsortedArray,0,UnsortedArray.size()-1);
+		for(int i=0;i<thread_num;i++)
+		{
+			argt[i]=i;
+			ret = pthread_create(&threads[i],NULL,&quicksort_thread,&argt[i]);
+			if(ret)
+			{
+				cout<<"ERROR WHILE CREATION";
+				exit(-1);
+			}
+			else
+			cout<<"\n\rThreads Created";
+		}
+		for(int i=0;i<thread_num;i++)
+		{
+			ret = pthread_join(threads[i],NULL);
+			if(ret)
+			{
+				printf("ERROR; pthread_join: %d\n", ret);
+				exit(-1);
+			}
+			else
+			cout<<"\n\r Threads Joined";
+		}
+		//final_merge_sorted(UnsortedArray,thread_num,1);
+		final_quick_sorted(UnsortedArray,thread_num,1);
 		cout<<"\n\rDoing quicksort";
 	}
 	else if(algorithm == "bucket")
