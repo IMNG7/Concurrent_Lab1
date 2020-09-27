@@ -26,7 +26,7 @@
 
 using namespace std;
 vector<int> UnsortedArray = {0};
-int thread_num=4;
+int thread_num=7;
 int offset=0;
 vector<int> *temp=NULL;
 //pthread_barrier_t bar;
@@ -87,7 +87,7 @@ int main(int argc, char *args[])
 	UnsortedArray = ConvertToVector(filename);
 	//cout<<"\n\rSIZE GIVEN:"<<UnsortedArray.size()<<"\n\r";
 	pthread_t threads[thread_num];
-	ssize_t* argt;
+	ssize_t* argt = new ssize_t[thread_num+1];
 	int ret;
 	offset = UnsortedArray.size() % thread_num;
 	//pthread_barrier_init(&bar, NULL, thread_num);
@@ -104,8 +104,7 @@ int main(int argc, char *args[])
 				cout<<"ERROR WHILE CREATION";
 				exit(-1);
 			}
-			else
-			cout<<"\n\rThreads Created";
+			cout<<"\n\rThreads "<<i<<" Created";
 		}
 		for(int i=0;i<thread_num;i++)
 		{
@@ -115,8 +114,7 @@ int main(int argc, char *args[])
 				printf("ERROR; pthread_join: %d\n", ret);
 				exit(-1);
 			}
-			else
-			cout<<"\n\r Threads Joined";
+			cout<<"\n\rThreads "<<i<<" Joined";
 		}
 		final_merge_sorted(UnsortedArray,thread_num,1);
 		
@@ -134,8 +132,7 @@ int main(int argc, char *args[])
 				cout<<"ERROR WHILE CREATION";
 				exit(-1);
 			}
-			else
-			cout<<"\n\rThreads Created";
+			cout<<"\n\rThreads "<<i<<" Created";
 		}
 		for(int i=0;i<thread_num;i++)
 		{
@@ -145,8 +142,7 @@ int main(int argc, char *args[])
 				printf("ERROR; pthread_join: %d\n", ret);
 				exit(-1);
 			}
-			else
-			cout<<"\n\r Threads Joined";
+			cout<<"\n\rThreads "<<i<<" Joined";
 		}
 		//final_merge_sorted(UnsortedArray,thread_num,1);
 		final_quick_sorted(UnsortedArray,thread_num,1);

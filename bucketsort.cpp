@@ -24,17 +24,13 @@ void* bucketsort_thread(void* args)
 	
 	int left =thread_part * (size/thread_num);
 	
-	
 	int right=((thread_part+1) * (size/thread_num)) -1;
-	
-	// cout<<"\n\r"<<right<<"\n\r";
 	
 	if (thread_part == thread_num - 1) 
 	{
         right += offset;
     }
-    
-	for(int i=left;i<right;i++)
+	for(int i=left;i<=right;i++)
 	{	mtx.lock();
 		int bucket_index = UnsortedArray[i]/divider;
 		temp[bucket_index].push_back(UnsortedArray[i]);
@@ -57,8 +53,7 @@ void bucketsort(int range,pthread_t *threads)
 			cout<<"ERROR WHILE CREATION";
 			exit(-1);
 		}
-		else
-		cout<<"\n\rThreads Created";
+		cout<<"\n\rThreads "<<i<<" Created";
 	}
 	for(int i=0;i<thread_num;i++)
 	{
@@ -68,8 +63,14 @@ void bucketsort(int range,pthread_t *threads)
 			printf("ERROR; pthread_join: %d\n", ret);
 			exit(-1);
 		}
-		else
-		cout<<"\n\rThreads Joined";
+		cout<<"\n\rThreads "<<i<<" Joined";
+	}
+	if(temp[thread_num].empty()!=true)
+	{
+		for(int i=0;i<temp[thread_num].size();i++)
+		{
+			temp[thread_num-1].push_back(temp[thread_num][i]);
+		}
 	}
 	for(int i=0;i<thread_num;i++)
 	{
@@ -77,10 +78,9 @@ void bucketsort(int range,pthread_t *threads)
 	}
 	int index = 0;
 	for(int i=0;i<thread_num;i++)
-	{	
+	{	cout<<"\n\rTempSize"<<i<<":"<<temp[i].size();
 		for(int j=0;j<temp[i].size();j++)
-		{
-			
+		{	
 			UnsortedArray[index++] = temp[i][j]; 
 		}
 	}
