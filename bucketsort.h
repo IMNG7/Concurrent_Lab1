@@ -10,10 +10,11 @@
 #define BUCKETSORT_H
 
 #include <vector>
+//#include <algorithm>
 
 using namespace std;
 
-void bucketsort(vector<int> &nums,int num_threads);
-
+void* bucketsort_thread(void* args);
+void bucketsort(int range,pthread_t *threads);
 
 #endif

@@ -11,7 +11,7 @@ CFLAGS = -g -O3
 all: mysort
 
 mysort: ${DEPS}
-	${CC} ${LIBS} ${CFLAGS} ${DEPS} -o $@ 
+	${CC} ${CFLAGS} ${LIBS} ${DEPS} -o $@ 
 
 *.o: *.cpp *.h
 	${CC} -c *.cpp

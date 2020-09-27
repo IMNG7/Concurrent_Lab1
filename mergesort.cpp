@@ -47,7 +47,7 @@ void mergesort(vector<int> &nums,int left,int right)
 void* mergesort_thread(void* args)
 {
 		size_t thread_part = *((size_t*)args);
-		int size = UnsortedArray.size();
+		int size = UnsortedArray.size()-1;
 		cout<<"\n\rtheadpart:"<<thread_part<<"\n\r";
 		int left =thread_part * (size/thread_num);
 		// cout<<"\n\r"<<left<<"\n\r";
@@ -141,7 +141,7 @@ void final_merge_sorted(vector<int> &nums,int num_thread,int agg)
 {
 	int size = UnsortedArray.size();
 	for(int i=0;i<num_thread;i+=2)
-	{
+	{	cout<<"\n\ri:"<<i;
 		int left = i*(size/thread_num)*agg;
 		int right = ((i+2)*(size/thread_num)*agg)- 1;
 		int middle = left + ((size/thread_num)*agg) - 1;
@@ -153,6 +153,8 @@ void final_merge_sorted(vector<int> &nums,int num_thread,int agg)
 	}
 	if(num_thread/2 >= 1)
 	{
+		cout<<"\n\rrecuring:";
 		final_merge_sorted(nums,num_thread/2,agg*2);
 	}
+	cout<<"\n\rlast:";
 }

@@ -80,9 +80,21 @@ vector<int> ConvertToVector(const string& filename)
 */
 void printIntVector(vector<int> nums)
 {
+	cout<<"Size:"<<nums.size();
 	for(int i=0;i<nums.size();i++)
 	{
-		cout<<"\n\r"<<nums[i];
+		cout<<"\n\r"<<nums[i]<<" "<<i;
 	}
 }
-
+int get_range(vector<int> &nums)
+{
+	int min=INT_MAX,max=INT_MIN;
+	int size = nums.size();
+	for(int i=0;i<size;i++)
+	{
+		if(min>nums[i]) min = nums[i];
+		else if(max<nums[i]) max = nums[i];
+	}
+	int range = max - min;
+	return range;
+}

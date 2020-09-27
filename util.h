@@ -7,6 +7,7 @@
 #define UTIL_H
 
 #include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -25,5 +26,6 @@ vector<int> ConvertToVector(const string&);
 	Description: Write the vector values into the file
 */
 void add_to_file(vector<int> &nums,string filename);
+int get_range(vector<int> &nums);
 
 #endif

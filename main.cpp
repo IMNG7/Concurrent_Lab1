@@ -154,7 +154,9 @@ int main(int argc, char *args[])
 	else if(algorithm == "bucket")
 	{	
 		//Sending the Unsorted Array to quicksort function.
-		bucketsort(UnsortedArray,4);
+		int range = get_range(UnsortedArray);
+		cout<<"Range:"<<range;
+		bucketsort(range,threads);
 		cout<<"\n\rDoing bucketsort";
 	}
 	else
