@@ -10,7 +10,7 @@ int range_given=0;
 extern vector<int> UnsortedArray;
 extern int thread_num;
 extern int offset;
-vector<int> *temp;
+extern vector<int> *temp;
 mutex mtx;
 
 void* bucketsort_thread(void* args)
@@ -24,16 +24,16 @@ void* bucketsort_thread(void* args)
 	
 	int left =thread_part * (size/thread_num);
 	
-	cout<<"\n\r"<<left<<"\n\r";
+	
 	int right=((thread_part+1) * (size/thread_num)) -1;
-	cout<<"\n\rleft:"<<left<<"\n\r";
+	
 	// cout<<"\n\r"<<right<<"\n\r";
 	
 	if (thread_part == thread_num - 1) 
 	{
         right += offset;
     }
-    cout<<"\n\rright:"<<right<<"\n\r";
+    
 	for(int i=left;i<right;i++)
 	{	mtx.lock();
 		int bucket_index = UnsortedArray[i]/divider;
@@ -47,10 +47,7 @@ void bucketsort(int range,pthread_t *threads)
 	ssize_t* argt = new ssize_t[thread_num+1];
 	int ret;
 	int size = UnsortedArray.size();
-	//temp.resize(thread_num+1);
-	cout<<"Here\n\r";
 	temp = new vector<int>[thread_num+1];
-	cout<<"Here\n\r";
 	for(int i=0;i<thread_num;i++)
 	{	
 		argt[i]=i;
@@ -76,17 +73,17 @@ void bucketsort(int range,pthread_t *threads)
 	}
 	for(int i=0;i<thread_num;i++)
 	{
-		//sort(temp[i].begin(),temp[i].end());
 		quicksort(temp[i],0,temp[i].size()-1);
 	}
 	int index = 0;
 	for(int i=0;i<thread_num;i++)
-	{	cout<<"\n\rTempSize "<<i<<" "<<temp[i].size();
+	{	
 		for(int j=0;j<temp[i].size();j++)
 		{
-			//cout<<"\n\r"<<UnsortedArray[index]<<"\t"<<temp[i][j]<<"\t"<<index;
+			
 			UnsortedArray[index++] = temp[i][j]; 
 		}
 	}
 	final_quick_sorted(UnsortedArray,thread_num,1);
+	delete argt;
 }

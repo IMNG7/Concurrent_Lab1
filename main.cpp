@@ -28,6 +28,7 @@ using namespace std;
 vector<int> UnsortedArray = {0};
 int thread_num=4;
 int offset=0;
+vector<int> *temp=NULL;
 //pthread_barrier_t bar;
 int main(int argc, char *args[])									 
 {	int c;
@@ -93,7 +94,7 @@ int main(int argc, char *args[])
 	if(algorithm == "merge")
 	{
 		//Sending the Unsorted Array to mergesort function.
-		//mergesort(UnsortedArray,0,UnsortedArray.size()-1);
+		cout<<"\n\rDoing mergesort";
 		for(int i=0;i<thread_num;i++)
 		{
 			argt[i]=i;
@@ -118,12 +119,12 @@ int main(int argc, char *args[])
 			cout<<"\n\r Threads Joined";
 		}
 		final_merge_sorted(UnsortedArray,thread_num,1);
-		cout<<"\n\rDoing mergesort";
+		
 	}
 	else if(algorithm == "quick")
 	{
 		//Sending the Unsorted Array to mergesort function.
-		//mergesort(UnsortedArray,0,UnsortedArray.size()-1);
+		cout<<"\n\rDoing quicksort";
 		for(int i=0;i<thread_num;i++)
 		{
 			argt[i]=i;
@@ -149,30 +150,29 @@ int main(int argc, char *args[])
 		}
 		//final_merge_sorted(UnsortedArray,thread_num,1);
 		final_quick_sorted(UnsortedArray,thread_num,1);
-		cout<<"\n\rDoing quicksort";
+		
 	}
 	else if(algorithm == "bucket")
 	{	
+		cout<<"\n\rDoing bucketsort";
 		//Sending the Unsorted Array to quicksort function.
 		int range = get_range(UnsortedArray);
-		cout<<"Range:"<<range;
 		bucketsort(range,threads);
-		cout<<"\n\rDoing bucketsort";
 	}
 	else
 	{
 		//Since there was not algorithm provided, will do the mergesort
 		// by default
-		cout<<"Wrong Choice,Doing Merge Sort By Default";
+		cout<<"Wrong Choice,Doing Merge Sort By Default without threads";
 		mergesort(UnsortedArray,0,UnsortedArray.size()-1);
 	}
 	//If output_file is provided, then send the Array to output_file
-	//if(!(output_file.empty())) add_to_file(UnsortedArray,output_file);
+	if(!(output_file.empty())) add_to_file(UnsortedArray,output_file);
 	//If output_file is not provided, then send the Array to console
-	// else
-	// {
-		//cout<<"\n\r Output File Not Given Printing the Sorted Array:";
+	else
+	{
+		cout<<"\n\r Output File Not Given Printing the Sorted Array:";
 		printIntVector(UnsortedArray);
-	//}
+	}
 	return 0;
 }

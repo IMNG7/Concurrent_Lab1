@@ -80,10 +80,9 @@ vector<int> ConvertToVector(const string& filename)
 */
 void printIntVector(vector<int> nums)
 {
-	cout<<"Size:"<<nums.size();
 	for(int i=0;i<nums.size();i++)
 	{
-		cout<<"\n\r"<<nums[i]<<" "<<i;
+		cout<<"\n\r"<<nums[i];
 	}
 }
 int get_range(vector<int> &nums)

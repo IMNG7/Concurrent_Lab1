@@ -64,7 +64,6 @@ void* quicksort_thread(void* args)
 {
 	size_t thread_part = *((size_t*)args);
 	int size = UnsortedArray.size();
-	cout<<"\n\rtheadpart:"<<thread_part<<"\n\r";
 	int left =thread_part * (size/thread_num);
 	// cout<<"\n\r"<<left<<"\n\r";
 	int right=((thread_part+1) * (size/thread_num)) -1;
