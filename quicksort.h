@@ -23,8 +23,20 @@ void quicksort(vector<int> &nums,int left,int right);
 	Description: Gets the pivot for next split.
 */
 int seperate(vector<int> &nums,int left,int right);
+/*
+	Function Name: quicksort_thread
+	Description: Initial recursive function to split the vector for sorting in different threads
+*/
 void* quicksort_thread(void* args);
+/*
+	Function Name: final_quick_sorted
+	Description: Merges different part of sorting done by threads in one array
+*/
 void final_quick_sorted(vector<int> &nums,int num_thread,int agg);
+/*
+	Function Name: BAR2_init
+	Description: Initializes Barrier
+*/
 void BAR2_init();
 
 #endif

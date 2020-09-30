@@ -30,7 +30,6 @@ vector<int> UnsortedArray = {0};
 int thread_num=5;
 int offset=0;
 struct timespec start= (struct timespec){0}, end_time= (struct timespec){0};
-//pthread_barrier_t bar;
 int main(int argc, char *args[])									 
 {	int c;
 	string input_file,output_file,algorithm;
@@ -63,7 +62,7 @@ int main(int argc, char *args[])
 						// Saves the algorithm name in the variable
 						algorithm = optarg;							
 						break;
-			case 't' :	
+			case 't' :	// Saves number of threads to be used
 						thread_num = atoi(optarg);
 						break;
 			default	:	
@@ -102,6 +101,7 @@ int main(int argc, char *args[])
 		for(int i=0;i<thread_num;i++)
 		{
 			argt[i]=i;
+			//Creates threads for merge sort
 			ret = pthread_create(&threads[i],NULL,&mergesort_thread,&argt[i]);
 			if(ret)
 			{
@@ -112,6 +112,7 @@ int main(int argc, char *args[])
 		}
 		for(int i=0;i<thread_num;i++)
 		{
+			//Joining the threads
 			ret = pthread_join(threads[i],NULL);
 			if(ret)
 			{
@@ -130,6 +131,7 @@ int main(int argc, char *args[])
 		for(int i=0;i<thread_num;i++)
 		{
 			argt[i]=i;
+			//Creates threads for quick sort
 			ret = pthread_create(&threads[i],NULL,&quicksort_thread,&argt[i]);
 			if(ret)
 			{
@@ -172,6 +174,7 @@ int main(int argc, char *args[])
 		cout<<"\n\r Output File Not Given Printing the Sorted Array:";
 		printIntVector(UnsortedArray);
 	}
+	//Calculates the time elapsed in completing the thread
 	unsigned long long elapsed_ns;
 	elapsed_ns = (end_time.tv_sec-start.tv_sec)*1000000000 + (end_time.tv_nsec-start.tv_nsec);
 	printf("Elapsed (ns): %llu\n",elapsed_ns);

@@ -40,11 +40,9 @@ void mergesort(vector<int> &nums,int left,int right)
 	}
 }
 /*
-	Function Name: mergesort
-	Description: Initial recursive function to split the vector for sorting
-	Inputs: nums- vector to be printed.
-			left - Left index of vector to be split
-			Right - Right index of the smal vector to be split.
+	Function Name: mergesort_thread
+	Description: Initial recursive function to split the vector for sorting for single thread
+	Inputs: args - thread number
 	Returns: Nothing.
 */
 void* mergesort_thread(void* args)
@@ -142,6 +140,14 @@ void merge(vector<int> &nums,int left,int middle,int right)
 		k++;
 	}
 }
+/*
+	Function Name: final_merge_sorted
+	Description: Merges different part of sorting done by threads in one array
+	Inputs: nums- vector to be printed.
+			num_thread - thread number .
+			agg - Aggregate, no of times this function is called.
+	Returns: Nothing.
+*/
 void final_merge_sorted(vector<int> &nums,int num_thread,int agg)
 {
 	int size = UnsortedArray.size();
@@ -161,6 +167,12 @@ void final_merge_sorted(vector<int> &nums,int num_thread,int agg)
 		final_merge_sorted(nums,num_thread/2,agg*2);
 	}
 }
+/*
+	Function Name: BAR1_init
+	Description: Initializes Barrier
+	Inputs: None
+	Returns: Nothing.
+*/
 void BAR1_init()
 {
 	pthread_barrier_init(&bar1, NULL, thread_num);

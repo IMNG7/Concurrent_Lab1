@@ -24,10 +24,20 @@ void mergesort(vector<int> &nums,int left,int right);
 	Description: Combines the sorted vectors from their indices
 */
 void merge(vector<int> &nums,int left,int middle,int right);
-
+/*
+	Function Name: mergesort_thread
+	Description: Initial recursive function to split the vector for sorting for single thread
+*/
 void* mergesort_thread(void* args);
-
+/*
+	Function Name: final_merge_sorted
+	Description: Merges different part of sorting done by threads in one array
+*/
 void final_merge_sorted(vector<int> &nums,int num_thread,int agg);
+/*
+	Function Name: BAR1_init
+	Description: Initializes Barrier
+*/
 void BAR1_init();
 
 #endif

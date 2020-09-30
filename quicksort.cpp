@@ -62,6 +62,12 @@ int seperate(vector<int> &nums,int left,int right)
 	nums[right] = temp;
 	return (i+1);
 }
+/*
+	Function Name: quicksort_thread
+	Description: Initial recursive function to split the vector for sorting in different threads
+	Inputs: args - thread number
+	Returns: Nothing.
+*/
 void* quicksort_thread(void* args)
 {
 	size_t thread_part = *((size_t*)args);
@@ -93,6 +99,14 @@ void* quicksort_thread(void* args)
 		clock_gettime(CLOCK_MONOTONIC,&end_time);
 	}
 }
+/*
+	Function Name: final_quick_sorted
+	Description: Merges different part of sorting done by threads in one array
+	Inputs: nums- vector to be printed.
+			num_thread - thread number .
+			agg - Aggregate, no of times this function is called.
+	Returns: Nothing.
+*/
 void final_quick_sorted(vector<int> &nums,int num_thread,int agg)
 {
 	int size = UnsortedArray.size();
@@ -111,6 +125,12 @@ void final_quick_sorted(vector<int> &nums,int num_thread,int agg)
 		final_quick_sorted(nums,num_thread/2,agg*2);
 	}
 }
+/*
+	Function Name: BAR2_init
+	Description: Initializes Barrier
+	Inputs: None
+	Returns: Nothing.
+*/
 void BAR2_init()
 {
 	pthread_barrier_init(&bar2, NULL, thread_num);
