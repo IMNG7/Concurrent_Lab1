@@ -74,7 +74,24 @@ void bucketsort(int range,pthread_t *threads)
 	}
 	for(int i=0;i<thread_num;i++)
 	{
-		quicksort(temp[i],0,temp[i].size()-1);
+		argt[i]=i;
+		ret = pthread_create(&threads[i],NULL,&quicksort_thread_bucket,&argt[i]);
+		if(ret)
+		{
+			cout<<"ERROR WHILE CREATION";
+			exit(-1);
+		}
+		cout<<"\n\rThreads "<<i<<" Created";
+	}
+	for(int i=0;i<thread_num;i++)
+	{
+		ret = pthread_join(threads[i],NULL);
+		if(ret)
+		{
+			printf("ERROR; pthread_join: %d\n", ret);
+			exit(-1);
+		}
+		cout<<"\n\rThreads "<<i<<" Joined";
 	}
 	int index = 0;
 	for(int i=0;i<thread_num;i++)
@@ -84,6 +101,20 @@ void bucketsort(int range,pthread_t *threads)
 			UnsortedArray[index++] = temp[i][j]; 
 		}
 	}
-	final_quick_sorted(UnsortedArray,thread_num,1);
 	delete argt;
+}
+void* quicksort_thread_bucket(void* args)
+{
+	size_t thread_part = *((size_t*)args);
+	int left =0;
+	// cout<<"\n\r"<<left<<"\n\r";
+	int right=temp[thread_part].size()-1;
+	// cout<<"\n\r"<<right<<"\n\r";
+	if(left<right)
+	{
+		// Takes the RIGHT number as pivot and uses it for sorting
+		int sep = seperate(temp[thread_part],left,right);
+		quicksort(temp[thread_part],left,sep-1);
+		quicksort(temp[thread_part],sep+1,right);
+	}
 }
