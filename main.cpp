@@ -28,7 +28,7 @@ using namespace std;
 vector<int> UnsortedArray = {0};
 int thread_num=7;
 int offset=0;
-vector<int> *temp=NULL;
+
 //pthread_barrier_t bar;
 int main(int argc, char *args[])									 
 {	int c;
@@ -151,9 +151,8 @@ int main(int argc, char *args[])
 	else if(algorithm == "bucket")
 	{	
 		cout<<"\n\rDoing bucketsort";
-		//Sending the Unsorted Array to quicksort function.
-		int range = get_range(UnsortedArray);
-		bucketsort(range,threads);
+		//Sending the threads reference to BucketSort function.
+		bucketsort(threads);
 	}
 	else
 	{

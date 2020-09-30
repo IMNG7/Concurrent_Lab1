@@ -15,7 +15,6 @@
 using namespace std;
 
 void* bucketsort_thread(void* args);
-void bucketsort(int range,pthread_t *threads);
-void* quicksort_thread_bucket(void* args);
+void bucketsort(pthread_t *threads);
 
 #endif
