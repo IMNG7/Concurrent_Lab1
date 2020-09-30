@@ -48,7 +48,6 @@ void* mergesort_thread(void* args)
 {
 		size_t thread_part = *((size_t*)args);
 		int size = UnsortedArray.size()-1;
-		cout<<"\n\rtheadpart:"<<thread_part<<"\n\r";
 		int left =thread_part * (size/thread_num);
 		// cout<<"\n\r"<<left<<"\n\r";
 		int right=((thread_part+1) * (size/thread_num)) -1;
@@ -58,6 +57,7 @@ void* mergesort_thread(void* args)
     	}
 		// Calculates the middle value of the array given
 		int middle = left+((right-left)/2);
+		
 		if(left<right)
 		{
 		//Splits the array into two parts and further given to split
@@ -86,14 +86,6 @@ void merge(vector<int> &nums,int left,int middle,int right)
 	//Size of the Right side array
 	int rightsize = right - middle;
 	//Temp arrays to save the numbers
-	// cout<<"\n\rleftsize:"<<leftsize<<"\n\r";
-	// cout<<"\n\rrightsize:"<<rightsize<<"\n\r";
-	if(rightsize < 0)
-	{
-		cout<<"\n\rleft:"<<left<<"\n\r";
-		cout<<"\n\rright:"<<right<<"\n\r";
-		cout<<"\n\rmiddle:"<<middle<<"\n\r";
-	}
 	int* lefttemp = new int[leftsize];
 	int* righttemp = new int[rightsize];
 	int i,j,k;
@@ -141,7 +133,7 @@ void final_merge_sorted(vector<int> &nums,int num_thread,int agg)
 {
 	int size = UnsortedArray.size();
 	for(int i=0;i<num_thread;i+=2)
-	{	cout<<"\n\ri:"<<i;
+	{	
 		int left = i*(size/thread_num)*agg;
 		int right = ((i+2)*(size/thread_num)*agg)- 1;
 		int middle = left + ((size/thread_num)*agg) - 1;
@@ -153,8 +145,6 @@ void final_merge_sorted(vector<int> &nums,int num_thread,int agg)
 	}
 	if(num_thread/2 >= 1)
 	{
-		cout<<"\n\rrecuring:";
 		final_merge_sorted(nums,num_thread/2,agg*2);
 	}
-	cout<<"\n\rlast:";
 }

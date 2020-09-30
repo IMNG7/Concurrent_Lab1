@@ -26,7 +26,7 @@
 
 using namespace std;
 vector<int> UnsortedArray = {0};
-int thread_num=7;
+int thread_num=5;
 int offset=0;
 
 //pthread_barrier_t bar;
@@ -41,10 +41,11 @@ int main(int argc, char *args[])
 			{"name",	no_argument,		0,	'n'},
 			{"output",	required_argument,	0,	'o'},
 			{"alg", 	required_argument,	0,	'a'},
+			{"threads", required_argument,	0,	't'},
 			{0,			0,					0,	0}
 		};
 		// Used to capture the command line arguments
-		c= getopt_long(argc,args,"no:a:",long_options,&count);		
+		c= getopt_long(argc,args,"no:t:a:",long_options,&count);		
 		if(c==-1)	break;
 		switch(c)
 		{
@@ -58,9 +59,11 @@ int main(int argc, char *args[])
 						output_file = optarg;						
 						break;
 			case 'a' :	
-						//cout<<optarg;
 						// Saves the algorithm name in the variable
 						algorithm = optarg;							
+						break;
+			case 't' :	
+						thread_num = atoi(optarg);
 						break;
 			default	:	
 						break;
@@ -117,7 +120,6 @@ int main(int argc, char *args[])
 			cout<<"\n\rThreads "<<i<<" Joined";
 		}
 		final_merge_sorted(UnsortedArray,thread_num,1);
-		
 	}
 	else if(algorithm == "quick")
 	{
@@ -146,7 +148,6 @@ int main(int argc, char *args[])
 		}
 		//final_merge_sorted(UnsortedArray,thread_num,1);
 		final_quick_sorted(UnsortedArray,thread_num,1);
-		
 	}
 	else if(algorithm == "bucket")
 	{	
