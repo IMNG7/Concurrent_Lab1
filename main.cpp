@@ -22,13 +22,14 @@
 #include "mergesort.h"
 #include "quicksort.h"
 #include "bucketsort.h"
-
+#include <stdlib.h>
+#include <unistd.h>
 
 using namespace std;
 vector<int> UnsortedArray = {0};
 int thread_num=5;
 int offset=0;
-
+struct timespec start= (struct timespec){0}, end_time= (struct timespec){0};
 //pthread_barrier_t bar;
 int main(int argc, char *args[])									 
 {	int c;
@@ -95,7 +96,7 @@ int main(int argc, char *args[])
 	offset = UnsortedArray.size() % thread_num;
 	//pthread_barrier_init(&bar, NULL, thread_num);
 	if(algorithm == "merge")
-	{
+	{	BAR1_init();
 		//Sending the Unsorted Array to mergesort function.
 		cout<<"\n\rDoing mergesort";
 		for(int i=0;i<thread_num;i++)
@@ -123,6 +124,7 @@ int main(int argc, char *args[])
 	}
 	else if(algorithm == "quick")
 	{
+		BAR2_init();
 		//Sending the Unsorted Array to mergesort function.
 		cout<<"\n\rDoing quicksort";
 		for(int i=0;i<thread_num;i++)
@@ -170,5 +172,10 @@ int main(int argc, char *args[])
 		cout<<"\n\r Output File Not Given Printing the Sorted Array:";
 		printIntVector(UnsortedArray);
 	}
+	unsigned long long elapsed_ns;
+	elapsed_ns = (end_time.tv_sec-start.tv_sec)*1000000000 + (end_time.tv_nsec-start.tv_nsec);
+	printf("Elapsed (ns): %llu\n",elapsed_ns);
+	double elapsed_s = ((double)elapsed_ns)/1000000000.0;
+	printf("Elapsed (s): %lf\n",elapsed_s);
 	return 0;
 }

@@ -11,6 +11,8 @@
 extern vector<int> UnsortedArray;
 extern int thread_num;
 extern int offset;
+extern struct timespec start, end_time;
+pthread_barrier_t bar2;
 /*
 	Function Name: quicksort
 	Description: Initial recursive function to split the vector for sorting
@@ -72,12 +74,23 @@ void* quicksort_thread(void* args)
 	{
         right += offset;
     }
+    pthread_barrier_wait(&bar2);
+	if(thread_part==0)
+	{
+		clock_gettime(CLOCK_MONOTONIC,&start);
+	}
+	pthread_barrier_wait(&bar2);
 	if(left<right)
 	{
 		// Takes the RIGHT number as pivot and uses it for sorting
 		int sep = seperate(UnsortedArray,left,right);
 		quicksort(UnsortedArray,left,sep-1);
 		quicksort(UnsortedArray,sep+1,right);
+	}
+	pthread_barrier_wait(&bar2);
+	if(thread_part==0)
+	{
+		clock_gettime(CLOCK_MONOTONIC,&end_time);
 	}
 }
 void final_quick_sorted(vector<int> &nums,int num_thread,int agg)
@@ -97,4 +110,8 @@ void final_quick_sorted(vector<int> &nums,int num_thread,int agg)
 	{
 		final_quick_sorted(nums,num_thread/2,agg*2);
 	}
+}
+void BAR2_init()
+{
+	pthread_barrier_init(&bar2, NULL, thread_num);
 }

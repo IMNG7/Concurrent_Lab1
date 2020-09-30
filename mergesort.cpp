@@ -12,6 +12,9 @@
 extern vector<int> UnsortedArray;
 extern int thread_num;
 extern int offset;
+pthread_barrier_t bar1;
+extern struct timespec start, end_time;
+
 /*
 	Function Name: mergesort
 	Description: Initial recursive function to split the vector for sorting
@@ -57,7 +60,12 @@ void* mergesort_thread(void* args)
     	}
 		// Calculates the middle value of the array given
 		int middle = left+((right-left)/2);
-		
+		pthread_barrier_wait(&bar1);
+		if(thread_part==0)
+		{
+			clock_gettime(CLOCK_MONOTONIC,&start);
+		}
+		pthread_barrier_wait(&bar1);
 		if(left<right)
 		{
 		//Splits the array into two parts and further given to split
@@ -68,6 +76,11 @@ void* mergesort_thread(void* args)
 		// sorting
 		// pthread_barrier_wait(&bar);
 		merge(UnsortedArray,left,middle,right);
+		}
+		pthread_barrier_wait(&bar1);
+		if(thread_part==0)
+		{
+			clock_gettime(CLOCK_MONOTONIC,&end_time);
 		}
 }
 /*
@@ -147,4 +160,8 @@ void final_merge_sorted(vector<int> &nums,int num_thread,int agg)
 	{
 		final_merge_sorted(nums,num_thread/2,agg*2);
 	}
+}
+void BAR1_init()
+{
+	pthread_barrier_init(&bar1, NULL, thread_num);
 }

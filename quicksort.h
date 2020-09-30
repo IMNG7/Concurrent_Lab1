@@ -25,5 +25,6 @@ void quicksort(vector<int> &nums,int left,int right);
 int seperate(vector<int> &nums,int left,int right);
 void* quicksort_thread(void* args);
 void final_quick_sorted(vector<int> &nums,int num_thread,int agg);
+void BAR2_init();
 
 #endif
